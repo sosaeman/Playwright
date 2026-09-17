@@ -31,13 +31,28 @@ playwrite/
 ## App and Credentials
 
 - App URL: https://create-asana-like-pr-39y5.bolt.host/
-- Default local username: admin
-- Default local password: password123
+
+To test locally Set the credentials for the current PowerShell session before running tests:
+
+```powershell
+$env:APP_USERNAME = "admin"
+$env:APP_PASSWORD = "password123"
+npm test
+```
 
 For GitHub Actions, use repository secrets:
 
 - `APP_USERNAME`
 - `APP_PASSWORD`
+
+## GitHub Actions
+
+The workflow reads the credentials from GitHub repository secrets and runs the test suite without storing secrets in the codebase.
+
+1. Go to the GitHub repository
+2. Open the Actions tab
+3. Select the Playwright workflow
+4. Click Run workflow
 
 ## Install Dependencies
 
@@ -62,17 +77,6 @@ npm run test:headed
 ```bash
 npx playwright test tests/data-driven.spec.js
 ```
-
-## GitHub Actions
-
-The workflow is configured for manual execution only.
-
-1. Go to the GitHub repository
-2. Open the Actions tab
-3. Select the Playwright workflow
-4. Click Run workflow
-
-The workflow reads the credentials from GitHub repository secrets and runs the test suite without storing secrets in the codebase.
 
 ## Data File
 
