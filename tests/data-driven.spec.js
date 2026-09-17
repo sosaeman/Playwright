@@ -9,8 +9,8 @@ const { test, expect } = require('@playwright/test');
 const scenarios = require('../data/test-data.json');
 
 const APP_URL = 'https://create-asana-like-pr-39y5.bolt.host/';
-const USERNAME = process.env.APP_USERNAME || 'admin';
-const PASSWORD = process.env.APP_PASSWORD || 'password123';
+const USERNAME = process.env.APP_USERNAME;
+const PASSWORD = process.env.APP_PASSWORD;
 
 /**
  * Logs in to the demo app using the provided credentials.
