@@ -9,8 +9,8 @@ const { test, expect } = require('@playwright/test');
 const scenarios = require('../data/test-data.json');
 
 const APP_URL = 'https://create-asana-like-pr-39y5.bolt.host/';
-const USERNAME = process.env.APP_USERNAME || 'admin';
-const PASSWORD = process.env.APP_PASSWORD || 'password123';
+const USERNAME = process.env.APP_USERNAME;
+const PASSWORD = process.env.APP_PASSWORD;
 
 /**
  * Logs in to the demo app using the provided credentials.
@@ -63,9 +63,22 @@ function findTaskCard(page, columnName, taskName) {
   return taskCard;
 }
 
-/** Creates one test case for each project, task, column, and tag scenario. */
-for (const scenario of scenarios) {
-  test(`${scenario.project} - ${scenario.task} in ${scenario.column}`,async ({ page }) => {
+/** Stops the suite when the application login is unavailable. */
+test.describe('Project board scenarios', () => {
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    try {
+      await login(page);
+    } finally {
+      await context.close();
+    }
+  });
+
+  /** Creates one test case for each project, task, column, and tag scenario. */
+  for (const scenario of scenarios) {
+    test(`${scenario.project} - ${scenario.task} in ${scenario.column}`,async ({ page }) => {
       await test.step('Login to the app', async () => {
         await login(page);
       });
@@ -90,6 +103,7 @@ for (const scenario of scenarios) {
           }
         }
       );
-    }
-  );
-}
+      }
+    );
+  }
+});
